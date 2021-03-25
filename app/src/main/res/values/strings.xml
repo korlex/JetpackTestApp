@@ -8,4 +8,11 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
 
+
+    <string name="dialog_warning_title">Warning</string>
+    <string name="dialog_warning_text">Do you really want to delete the note?</string>
+    <string name="dialog_warning_btn_yes">Yes</string>
+    <string name="dialog_warning_btn_no">No</string>
+
+
 </resources>

@@ -4,4 +4,5 @@ data class NoteDetailScreenState(
     var noteId: Long = 0L,
     var noteName: String = "",
     var noteText: String = "",
-    var noteState: Int = 0)
+    var noteState: Int = 0,
+    var showDialog: Boolean = false)

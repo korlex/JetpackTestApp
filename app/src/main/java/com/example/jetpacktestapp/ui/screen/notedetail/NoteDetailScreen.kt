@@ -37,8 +37,10 @@ fun noteDetailScreen(
     LaunchedEffect(key1 = "key") {  if(noteId != null && noteId != 0L) noteDetailViewModel.getNote(noteId) }
     val noteDetailScreenState = noteDetailViewModel.notesDetailScreenState.collectAsState().value
     val noteState = noteDetailScreenState.noteState
+    val showDialog = mutableStateOf(noteDetailScreenState.showDialog)
     val nameState = mutableStateOf(TextFieldValue(noteDetailScreenState.noteName))
     val textState = mutableStateOf(TextFieldValue(noteDetailScreenState.noteText))
+
     val context = LocalContext.current
 
 
@@ -47,9 +49,9 @@ fun noteDetailScreen(
             topBar = {
                 toolBar(
                     noteId = noteId,
-                    backCallback = { navController.popBackStack() },
-                    addNoteCallback = { noteDetailViewModel.addNote(noteId ?: 0, nameState.value.text, textState.value.text) },
-                    delNoteCallback = { noteDetailViewModel.delNote(it) }) },
+                    backBtnCallback = { navController.popBackStack() },
+                    addNoteBtnCallback = { noteDetailViewModel.addNote(noteId ?: 0, nameState.value.text, textState.value.text) },
+                    delNoteBtnCallback = { showDialog.value = true }) },
 
 
             content = { content(nameState = nameState, textState = textState) }
@@ -63,9 +65,9 @@ fun noteDetailScreen(
             topBar = {
                 toolBar(
                     noteId = noteId,
-                    backCallback = { navController.popBackStack() },
-                    addNoteCallback = { noteDetailViewModel.addNote(noteId ?: 0, nameState.value.text, textState.value.text) },
-                    delNoteCallback = { noteDetailViewModel.delNote(it) }) },
+                    backBtnCallback = { navController.popBackStack() },
+                    addNoteBtnCallback = { noteDetailViewModel.addNote(noteId ?: 0, nameState.value.text, textState.value.text) },
+                    delNoteBtnCallback = { showDialog.value = true }) },
 
 
             content = { content(nameState = nameState, textState = textState) }
@@ -77,6 +79,15 @@ fun noteDetailScreen(
         navController.popBackStack()
     }
 
+    dialog(
+        showDialog = showDialog,
+        delNoteCallback = {
+            if(noteId != null && noteId != 0L) {
+                noteDetailViewModel.delNote(noteId)
+
+            }
+        })
+
 }
 
 
@@ -84,9 +95,9 @@ fun noteDetailScreen(
 @Composable
 fun toolBar(
     noteId: Long?,
-    backCallback: () -> Unit,
-    addNoteCallback: () -> Unit,
-    delNoteCallback: (id: Long)-> Unit) {
+    backBtnCallback: () -> Unit,
+    addNoteBtnCallback: () -> Unit,
+    delNoteBtnCallback: ()-> Unit) {
 
     val backIconImage = painterResource(id = R.drawable.ic_baseline_arrow_back_24)
     val saveIconImage = painterResource(id = R.drawable.ic_baseline_check_24)
@@ -103,7 +114,7 @@ fun toolBar(
         title = { Text(text = title) },
         contentColor = White900,
         navigationIcon = {
-            IconButton(onClick = { backCallback.invoke() }) {
+            IconButton(onClick = { backBtnCallback.invoke() }) {
                 Icon(
                     painter = backIconImage,
                     contentDescription = null
@@ -115,7 +126,7 @@ fun toolBar(
 
             if(noteId != null && noteId != -0L) {
                 IconButton(onClick = {
-                    delNoteCallback.invoke(noteId)
+                    delNoteBtnCallback.invoke()
                 }) {
                     Icon(
                         painter = deleteIconImage,
@@ -126,7 +137,7 @@ fun toolBar(
 
             IconButton(onClick = {
                 Log.d("TAG", "btnSave click")
-                addNoteCallback.invoke()
+                addNoteBtnCallback.invoke()
 
             }) {
                 Icon(
@@ -187,29 +198,37 @@ fun content(nameState: MutableState<TextFieldValue>, textState: MutableState<Tex
 }
 
 @Composable
-fun dialog() {
-    AlertDialog(
+fun dialog(showDialog: MutableState<Boolean>, delNoteCallback: () -> Unit) {
+    if(showDialog.value) {
 
-        title = {
-            Text(text = "Alert Dialog")
-        },
-        text = {
-            Text("JetPack Compose Alert Dialog!")
-        },
+        val title = stringResource(id = R.string.dialog_warning_title)
+        val text = stringResource(id = R.string.dialog_warning_text)
+        val confirmButtonText = stringResource(id = R.string.dialog_warning_btn_yes)
+        val dismissButtonText = stringResource(id = R.string.dialog_warning_btn_no)
 
-        buttons = {
+        AlertDialog(
 
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "No")
-            }
+            title = {
+                Text(text = title)
+            },
+            text = {
+                Text(text = text)
+            },
 
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Yes")
-            }
+            confirmButton = {
+                Button(onClick = { delNoteCallback.invoke() }) {
+                    Text(text = confirmButtonText)
+                }
+            },
 
-        },
+            dismissButton = {
+                Button(onClick = { showDialog.value = false }) {
+                    Text(text = dismissButtonText)
+                }
+            },
 
-        onDismissRequest = {}
-    )
+            onDismissRequest = { showDialog.value = false }
+        )
+    }
 }
 
