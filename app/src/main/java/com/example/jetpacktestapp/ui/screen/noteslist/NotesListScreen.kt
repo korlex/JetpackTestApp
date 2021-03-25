@@ -34,25 +34,19 @@ import com.example.jetpacktestapp.ui.theme.White900
 
 object NotesListScreen : ScreenDestination(path = "NOTES_LIST_SCREEN")
 
-@ExperimentalMaterialApi
 @Composable
 fun notesListScreen(navController: NavHostController, notesListViewModel: NotesListViewModel) {
 
     LaunchedEffect(key1 = "key") { notesListViewModel.getNotes() }
     val notesListScreenState = notesListViewModel.viewState.collectAsState().value
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
-    )
 
     //val notesStr2: List<String> by notesListViewModel._viewState.collectAsState(emptyList<String>())
     //val favorites by postsRepository.observeFavorites().collectAsState(setOf())
 
-    BottomSheetScaffold(
+    Scaffold(
         topBar = { toolBar() },
 
         content = { content(navController = navController, notesListScreenState = notesListScreenState) },
-
-        sheetContent = { bottomSheet() },
 
         floatingActionButton = { fab(navController = navController) }
     )
@@ -181,16 +175,8 @@ fun noteItem(navController: NavHostController, noteListViewData: NoteListViewDat
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(vertical = 8.dp)
-        .clickable(onClick = { navController.navigate("NOTE_DETAIL_SCREEN/${noteListViewData.id}") })
-        .pointerInput(Unit) {
-            detectTapGestures(
-                onPress = {/* Called when the gesture starts */ },
-                onDoubleTap = { /* Called on Double Tap */ },
-                onLongPress = { /* Called on Long Press */ },
-                onTap = { /* Called on Tap */ }
-            )
-        }
-    ) {
+        .clickable(onClick = { navController.navigate("NOTE_DETAIL_SCREEN/${noteListViewData.id}") })) {
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 modifier = Modifier.padding(start = 8.dp),
