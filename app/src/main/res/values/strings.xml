@@ -2,7 +2,7 @@
     <string name="app_name">JetpackTestApp</string>
     <string name="notes_list">Notes list</string>
     <string name="note">Note</string>
-    <string name="notes_list_empty">You have no notes yet</string>
+    <string name="notes_list_empty">You have no notes yet :(</string>
     <string name="name">Name</string>
     <string name="text">Text</string>
     <string name="cancel">Cancel</string>

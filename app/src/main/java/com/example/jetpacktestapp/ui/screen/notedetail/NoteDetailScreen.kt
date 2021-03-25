@@ -166,7 +166,7 @@ fun content(nameState: MutableState<TextFieldValue>, textState: MutableState<Tex
             modifier = Modifier.fillMaxWidth(),
             value = nameState.value,
             onValueChange = { nameState.value = it },
-            textStyle = TextStyle(fontSize = 16.sp),
+            textStyle = TextStyle(fontSize = 18.sp),
             label = { Text(text = nameLabel) },
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
@@ -183,7 +183,7 @@ fun content(nameState: MutableState<TextFieldValue>, textState: MutableState<Tex
             modifier = Modifier.fillMaxSize(),
             value = textState.value,
             onValueChange = { textState.value = it },
-            textStyle = TextStyle(fontSize = 16.sp),
+            textStyle = TextStyle(fontSize = 18.sp),
             label = { Text(text = textLabel) },
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,

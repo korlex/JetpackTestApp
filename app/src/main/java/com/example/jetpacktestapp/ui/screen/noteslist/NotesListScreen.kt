@@ -6,9 +6,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -21,6 +19,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import com.example.jetpacktestapp.R
@@ -50,6 +50,7 @@ fun notesListScreen(navController: NavHostController, notesListViewModel: NotesL
 
         floatingActionButton = { fab(navController = navController) }
     )
+
 }
 
 
@@ -174,12 +175,15 @@ fun noteItem(navController: NavHostController, noteListViewData: NoteListViewDat
     val image = painterResource(id = R.drawable.ic_baseline_note_24)
     Column(modifier = Modifier
         .fillMaxWidth()
-        .padding(vertical = 8.dp)
         .clickable(onClick = { navController.navigate("NOTE_DETAIL_SCREEN/${noteListViewData.id}") })) {
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.padding(top = 16.dp),
+            verticalAlignment = Alignment.CenterVertically) {
             Image(
-                modifier = Modifier.padding(start = 8.dp),
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .size(32.dp),
                 painter = image,
                 colorFilter = ColorFilter.tint(color = Purple200),
                 contentDescription = null)
@@ -187,22 +191,22 @@ fun noteItem(navController: NavHostController, noteListViewData: NoteListViewDat
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 8.dp, end = 8.dp),
+                    .padding(start = 16.dp, end = 16.dp),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 text = noteListViewData.name,
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold)
         }
 
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 8.dp, end = 8.dp),
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             text = noteListViewData.text,
-            fontSize = 14.sp)
+            fontSize = 16.sp)
     }
 }
 
