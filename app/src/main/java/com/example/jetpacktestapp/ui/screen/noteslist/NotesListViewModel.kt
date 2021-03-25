@@ -21,7 +21,7 @@ class NotesListViewModel @Inject constructor(private val notesRepository: NotesR
         job = viewModelScope.launch {
             _viewState.value = _viewState.value.copy(isLoading = true)
 
-            delay(1000)
+            delay(500)
 
             val notesList = withContext(Dispatchers.IO) {
                 notesRepository

@@ -89,12 +89,12 @@ fun emptyContent() {
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 8.dp, end = 8.dp),
+            .padding(start = 16.dp, end = 16.dp),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         text = stringResource(id = R.string.notes_list_empty),
         textAlign = TextAlign.Center,
-        fontSize = 14.sp)
+        fontSize = 16.sp)
 }
 
 @Composable
