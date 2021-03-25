@@ -18,7 +18,7 @@ abstract class NoteDao {
     @Query("SELECT * FROM notedbdata")
     abstract fun getNotes(): List<NoteDbData>
 
-    @Query("delete from notedbdata WHERE id in (:noteIdList)")
-    abstract fun deleteNotes(noteIdList: List<Long>)
+    @Query("delete from notedbdata WHERE id = :noteId")
+    abstract fun deleteNote(noteId: Long)
 
 }

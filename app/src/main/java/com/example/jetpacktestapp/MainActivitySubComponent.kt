@@ -2,7 +2,6 @@ package com.example.jetpacktestapp
 
 import com.example.jetpacktestapp.di.scopes.ActivityScope
 import com.example.jetpacktestapp.ui.screen.notedetail.NoteDetailViewModel
-import com.example.jetpacktestapp.ui.screen.notedetail.data.NoteDetailViewData
 import com.example.jetpacktestapp.ui.screen.noteslist.NotesListViewModel
 import dagger.BindsInstance
 import dagger.Subcomponent

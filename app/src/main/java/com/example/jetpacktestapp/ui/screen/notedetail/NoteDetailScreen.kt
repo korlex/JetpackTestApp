@@ -33,7 +33,8 @@ fun noteDetailScreen(
     noteDetailViewModel: NoteDetailViewModel,
     noteId: Long?) {
 
-    LaunchedEffect(key1 = "key") {  if(noteId != null && noteId != -1L) noteDetailViewModel.getNote(noteId) }
+    Log.d("TAG", "noteDetailScreen, noteId = $noteId")
+    LaunchedEffect(key1 = "key") {  if(noteId != null && noteId != 0L) noteDetailViewModel.getNote(noteId) }
     val noteDetailScreenState = noteDetailViewModel.notesDetailScreenState.collectAsState().value
     val noteState = noteDetailScreenState.noteState
     val nameState = mutableStateOf(TextFieldValue(noteDetailScreenState.noteName))
@@ -45,8 +46,10 @@ fun noteDetailScreen(
         Scaffold(
             topBar = {
                 toolBar(
+                    noteId = noteId,
                     backCallback = { navController.popBackStack() },
-                    addNoteCallback = { noteDetailViewModel.addNote(nameState.value.text, textState.value.text) }) },
+                    addNoteCallback = { noteDetailViewModel.addNote(noteId ?: 0, nameState.value.text, textState.value.text) },
+                    delNoteCallback = { noteDetailViewModel.delNote(it) }) },
 
 
             content = { content(nameState = nameState, textState = textState) }
@@ -59,8 +62,10 @@ fun noteDetailScreen(
         Scaffold(
             topBar = {
                 toolBar(
+                    noteId = noteId,
                     backCallback = { navController.popBackStack() },
-                    addNoteCallback = { noteDetailViewModel.addNote(nameState.value.text, textState.value.text) }) },
+                    addNoteCallback = { noteDetailViewModel.addNote(noteId ?: 0, nameState.value.text, textState.value.text) },
+                    delNoteCallback = { noteDetailViewModel.delNote(it) }) },
 
 
             content = { content(nameState = nameState, textState = textState) }
@@ -77,9 +82,15 @@ fun noteDetailScreen(
 
 
 @Composable
-fun toolBar(backCallback: () -> Unit, addNoteCallback: () -> Unit) {
+fun toolBar(
+    noteId: Long?,
+    backCallback: () -> Unit,
+    addNoteCallback: () -> Unit,
+    delNoteCallback: (id: Long)-> Unit) {
+
     val backIconImage = painterResource(id = R.drawable.ic_baseline_arrow_back_24)
     val saveIconImage = painterResource(id = R.drawable.ic_baseline_check_24)
+    val deleteIconImage = painterResource(id = R.drawable.ic_baseline_delete_24)
     val title = stringResource(id = R.string.note)
 
     TopAppBar(
@@ -101,6 +112,17 @@ fun toolBar(backCallback: () -> Unit, addNoteCallback: () -> Unit) {
         },
 
         actions = {
+
+            if(noteId != null && noteId != -0L) {
+                IconButton(onClick = {
+                    delNoteCallback.invoke(noteId)
+                }) {
+                    Icon(
+                        painter = deleteIconImage,
+                        contentDescription = null
+                    )
+                }
+            }
 
             IconButton(onClick = {
                 Log.d("TAG", "btnSave click")
@@ -162,5 +184,32 @@ fun content(nameState: MutableState<TextFieldValue>, textState: MutableState<Tex
 
     }
 
+}
+
+@Composable
+fun dialog() {
+    AlertDialog(
+
+        title = {
+            Text(text = "Alert Dialog")
+        },
+        text = {
+            Text("JetPack Compose Alert Dialog!")
+        },
+
+        buttons = {
+
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "No")
+            }
+
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Yes")
+            }
+
+        },
+
+        onDismissRequest = {}
+    )
 }
 

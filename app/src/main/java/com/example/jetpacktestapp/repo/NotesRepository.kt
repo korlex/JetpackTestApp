@@ -26,9 +26,9 @@ class NotesRepository @Inject constructor(private val jetpackTestAppDb: JetpackT
             .getNotes()
     }
 
-    fun deleteNotes(noteIdList: List<Long>) {
+    fun deleteNote(noteId: Long) {
         jetpackTestAppDb
             .getNoteDao()
-            .deleteNotes(noteIdList)
+            .deleteNote(noteId)
     }
 }

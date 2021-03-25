@@ -4,8 +4,6 @@ import android.util.Log
 import com.example.jetpacktestapp.db.data.NoteDbData
 import com.example.jetpacktestapp.repo.NotesRepository
 import com.example.jetpacktestapp.ui.screen.notedetail.data.NoteDetailScreenState
-import com.example.jetpacktestapp.ui.screen.notedetail.data.NoteDetailViewData
-import com.example.jetpacktestapp.ui.screen.noteslist.data.NotesListScreenState
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,7 +29,7 @@ class NoteDetailViewModel @Inject constructor(private val notesRepository: Notes
         }
     }
 
-    fun addNote(noteName: String, noteText: String) {
+    fun addNote(noteId: Long, noteName: String, noteText: String) {
         Log.d("TAG", "vm addNote called")
         job = viewModelScope.launch {
 
@@ -43,6 +41,7 @@ class NoteDetailViewModel @Inject constructor(private val notesRepository: Notes
 
                 withContext(Dispatchers.IO) {
                     val noteDbData = NoteDbData(
+                        id = noteId,
                         name = noteName,
                         text = noteText)
 
@@ -60,8 +59,14 @@ class NoteDetailViewModel @Inject constructor(private val notesRepository: Notes
         }
     }
 
-
-    fun changeName(newName: String) {
-        _notesDetailScreenState.value = _notesDetailScreenState.value.copy(noteName = newName)
+    fun delNote(noteId: Long) {
+        job = viewModelScope.launch {
+            withContext(Dispatchers.IO) { notesRepository.deleteNote(noteId = noteId) }
+            _notesDetailScreenState.value = _notesDetailScreenState.value.copy(noteState = 1)
+        }
     }
+
+
+
+
 }

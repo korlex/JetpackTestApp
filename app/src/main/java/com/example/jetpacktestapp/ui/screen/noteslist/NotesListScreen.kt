@@ -211,7 +211,7 @@ fun fab(navController: NavHostController) {
     val image = painterResource(id = R.drawable.ic_baseline_add_24)
     FloatingActionButton(
         backgroundColor = Purple700,
-        onClick = { navController.navigate("NOTE_DETAIL_SCREEN/${-1}") }) {
+        onClick = { navController.navigate("NOTE_DETAIL_SCREEN/${0}") }) {
 
         Image(
             painter = image,
